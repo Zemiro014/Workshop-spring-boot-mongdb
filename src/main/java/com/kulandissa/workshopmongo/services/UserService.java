@@ -26,8 +26,8 @@ public class UserService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 	
-	public User insertUser(User obj) {
-		return userRepository.insert(obj);
+	public User insertUser(User obj_User) {
+		return userRepository.insert(obj_User);
 	}
 	
 	public void deleteUser(String id) {
@@ -35,6 +35,18 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 	
+	public User updateUser(User obj_UserReceivedFromRequest) 
+	{
+		User obj_toBeUpdated = findById(obj_UserReceivedFromRequest.getId());
+		updatingExistentUserDate(obj_toBeUpdated, obj_UserReceivedFromRequest);
+		return userRepository.save(obj_toBeUpdated);
+	}
+	
+	private void updatingExistentUserDate(User obj_toBeUpdated, User updater_Obj) {
+		obj_toBeUpdated.setName(updater_Obj.getName());
+		obj_toBeUpdated.setEmail(updater_Obj.getEmail());		
+	}
+
 	public User convertUserDtoFromUser(UserDTO obj_Dto) {
 		return new User(obj_Dto.getId(), obj_Dto.getName(), obj_Dto.getEmail());
 	}

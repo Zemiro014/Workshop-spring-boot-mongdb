@@ -26,8 +26,13 @@ public class UserService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 	
-	public User inserUser(User obj) {
+	public User insertUser(User obj) {
 		return userRepository.insert(obj);
+	}
+	
+	public void deleteUser(String id) {
+		findById(id);
+		userRepository.deleteById(id);
 	}
 	
 	public User convertUserDtoFromUser(UserDTO obj_Dto) {

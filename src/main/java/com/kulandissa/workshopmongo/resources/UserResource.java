@@ -60,9 +60,16 @@ public class UserResource {
 	public ResponseEntity<Void> insertUser(@RequestBody UserDTO objDto)
 	{		
 		User obj_user = userService.convertUserDtoFromUser(objDto);
-		obj_user = userService.inserUser(obj_user);
+		obj_user = userService.insertUser(obj_user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj_user.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteUserById(@PathVariable String id)
+	{		
+		userService.deleteUser(id);		
+		return ResponseEntity.noContent().build();
 	}
 	
 }

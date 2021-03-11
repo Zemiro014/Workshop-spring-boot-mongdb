@@ -1,5 +1,6 @@
 package com.kulandissa.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kulandissa.workshopmongo.domain.User;
 import com.kulandissa.workshopmongo.dto.UserDTO;
@@ -49,9 +52,17 @@ public class UserResource {
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<UserDTO> findUserById(@PathVariable String id)
 	{		
-		User obj_user = userService.findById(id);
-		
+		User obj_user = userService.findById(id);		
 		return ResponseEntity.ok().body(new UserDTO(obj_user));
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insertUser(@RequestBody UserDTO objDto)
+	{		
+		User obj_user = userService.convertUserDtoFromUser(objDto);
+		obj_user = userService.inserUser(obj_user);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj_user.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 }

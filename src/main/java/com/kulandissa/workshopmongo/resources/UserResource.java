@@ -58,7 +58,7 @@ public class UserResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insertUser(@RequestBody UserDTO objDtoFromRequest)
-	{		
+	{	
 		User obj_user = userService.convertUserDtoFromUser(objDtoFromRequest);
 		obj_user = userService.insertUser(obj_user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj_user.getId()).toUri();
@@ -67,7 +67,7 @@ public class UserResource {
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteUserById(@PathVariable String id)
-	{		
+	{	
 		userService.deleteUser(id);		
 		return ResponseEntity.noContent().build();
 	}

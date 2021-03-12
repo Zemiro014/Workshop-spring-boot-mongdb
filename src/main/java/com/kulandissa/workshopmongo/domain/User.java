@@ -1,8 +1,11 @@
 package com.kulandissa.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="user")
@@ -14,10 +17,12 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	
+	@DBRef(lazy=true)	// O lazy=true, garante que ao consultar os dados do "User", não venham com ele os dados do "Post", salvo se eu explicitamente querer acessar os "Post"
+	private List<Post> posts = new ArrayList<>();
 	public User() {
 		
 	}
-
+	
 	public User(String id, String name, String email) {
 		this.id = id;
 		this.name = name;
@@ -46,6 +51,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
